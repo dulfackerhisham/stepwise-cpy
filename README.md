@@ -16,8 +16,6 @@ StepWise optimizes performance by utilizing Django's `bulk_create` for efficient
 **Locking Mechanism:**
 Our platform incorporates a robust locking mechanism to manage product quantities accurately. This prevents any race conditions, offering a smooth shopping experience even in a multi-user environment.
 
-**Asynchronous Task Processing with Celery:**
-StepWise leverages Celery for asynchronous task processing. Time-consuming tasks, such as sending order confirmation emails, are handled asynchronously, enhancing the overall responsiveness of the application.
 
 ## Technologies Used
 
@@ -26,7 +24,6 @@ StepWise harnesses a powerful stack of technologies to deliver a cutting-edge E-
 - **Python Django:** The foundation of StepWise, providing a solid server-side framework.
 - **PostgreSQL:** Our database choice, ensuring secure and efficient data management.
 - **Ajax:** Enhancing interactivity and responsiveness for a smoother user experience.
-- **Celery:** Enabling asynchronous task processing for improved performance.
 - **Bootstrap:** Crafting a sleek and responsive design for an enhanced user interface.
 - **Razorpay:** Seamless payment integration for quick and hassle-free transactions.
 - **Unicorn:** A high-performance HTTP server for deployment, contributing to the website's speed and reliability.
@@ -50,7 +47,7 @@ Follow these steps to explore StepWise:
 1. Open your terminal or command prompt.
 2. Navigate to your desired directory using `cd`.
 3. Clone the repository:
- `https://github.com/dulfackerhisham/StepWise.git`
+ `https://github.com/dulfackerhisham/stepwise-cpy`
 4. Navigate to the project directory: 
  `cd StepWise`
 5. Install dependencies: `pip install -r requirements.txt`
