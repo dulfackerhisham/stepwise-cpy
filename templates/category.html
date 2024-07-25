@@ -1,0 +1,432 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+{% block head %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/themes/default.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.min.js"></script>
+
+<style>
+	input[type="range"]::-webkit-meter-bar
+	{
+		-webkit-appearance: none;
+		margin-right: 15px;
+		height: 7px;
+		background: rgba(#d46618, #d46618, #d46618, 0.6);
+		border-radius: 5px;
+		background-image: linear-gradient(#ff6c00, #ff6c00);
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+	}
+
+	input[type="range"]::-webkit-slider-thumb{
+		-webkit-appearance: none;
+		height: 20px;
+		width: 20px;
+		border-radius: 50%;
+		background: #ff6c00;
+		/* cursor: ew-resize; */
+		box-shadow: 0 0 2px 0 #555;
+		transition: background .3s ease-in-out;
+	}
+
+	input[type="range"]::-webkit-slider-runnable-track{
+		-webkit-appearance: none;
+		box-shadow: none;
+		border: none;
+		background: transparent;
+
+	}
+
+	#max_price {
+		border-radius: 1px;
+	}
+</style>
+
+
+{% endblock head %}
+
+
+	<!-- Start Header Area -->
+	
+	{% block navbar %}
+		
+		
+	<header class="header_area sticky-header">
+		<div class="main_menu">
+			<nav class="navbar navbar-expand-lg navbar-light main_box">
+				<div class="container">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<a class="navbar-brand logo_h" href="{% url 'home' %}"><img style="height: 90px;" src="{% static 'img/log/social.jfif' %}" alt=""></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+						<ul class="nav navbar-nav menu_nav ml-auto">
+							<li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+							<li class="nav-item active"><a href="{% url 'productList' %}" class="nav-link">Shop</a>
+								<!-- <ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
+									<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
+									<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
+									<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
+									<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+								</ul> -->
+							</li>
+							<!-- <li class="nav-item active"><a href="{% url 'productList' %}" class="nav-link">Female</a> -->
+								<!-- <ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="blog.html">Women</a></li>
+									<li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
+								</ul> -->
+							<!-- </li> -->
+							<li class="nav-item">
+								<a href="{% url 'wishlist' %}" class="nav-link">Wishlist</a>
+								<!-- <ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+									<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
+									<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
+								</ul> -->
+							</li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav-item nav-link"><a href="{% url 'cart' %}" class="cart"><span class="ti-bag"></span></a></li>
+							<!-- <li class="nav-item nav-link">
+								<button class="search "><span class="lnr lnr-magnifier" id="search"></span></button>
+							</li> -->
+							{% if user.is_authenticated %}
+							<li class="nav-item dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false"><span class="ti-user"></span></a>
+								<ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="{% url 'user_profile' %}">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log out</a></li>
+								</ul>
+							</li>
+
+							{% else %}
+							<li class="nav-item"><a href="{% url 'logIn' %}" class="nav-link"><span>Login</span></a>
+
+							{% endif %}
+
+
+						</ul>
+						
+					</div>
+				</div>
+			</nav>
+		</div>
+		<!-- <div class="search_input" id="search_input_box">
+			<div class="container">
+				<form class="d-flex justify-content-between">
+					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+			</div>
+		</div> -->
+	</header>
+	{% endblock navbar %}
+
+	<!-- End Header Area -->
+
+	
+	{% block main %}
+
+		
+		
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Shop</h1>
+					<nav class="d-flex align-items-center">
+						<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+						<!-- <a href="#">Shop<span class="lnr lnr-arrow-right"></span></a> -->
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+	<div class="container" style="margin-top: 30px;">
+		<div class="row">
+			<div class="col-xl-3 col-lg-4 col-md-5">
+				<div class="sidebar-categories">
+					<div class="head">Categories</div>
+					{% for c in category %}
+
+					<ul class="main-categories">
+					
+						<!-- <li class="main-nav-list">
+							<input class="form-check-input filter-checkbox"  type="checkbox" name="checkbox">
+							<a  href="#homeClean" aria-controls="homeClean"><span
+								 class="lnr lnr-arrow-right"></span><span class="number"></span></a> -->
+								<br>
+								<li class="filter-list">
+									<input data-filter="category" class="pixel-radio  filter-box" type="checkbox" id="" name="category" value="{{c.id}}"><label for="">{{c}}<span></span></label>
+								</li>
+								<br>
+
+						<!-- </li> -->
+					</ul>
+					{% endfor %}
+
+				</div>
+				<div class="sidebar-filter mt-50">
+					<div class="top-filter-head">Product Filters</div>
+					<div class="common-filter">
+						<div class="head">Brands</div>
+						<form action="#">
+						{% for b in brand %}
+
+							<ul>
+								<li class="filter-list"><input data-filter="brand" class="pixel-radio filter-box" type="checkbox" id="" name="brand" value="{{b.id}}"><label for="">{{b}}<span></span></label></li>
+
+							</ul>
+					{% endfor %}
+
+						</form>
+					</div>
+					<!-- <div class="common-filter">
+						<div class="head">Color</div>
+						<form action="#">
+						{% for color in colors %}
+
+							<ul>
+								<li class="filter-list"><input data-filter="color" class="pixel-radio filter-box" type="checkbox" id="" name="color" value="{{color.id}}"><label for="">{{color}}<span></span></label></li>
+							</ul>
+					{% endfor %}
+
+						</form>
+					</div> -->
+					<div class="common-filter">
+						<div class="head">Price</div>
+						<div class="price-range-area">
+							<input type="range" name="range" class="w-100 slider-range" value="{{min_max_price.price__min}}" id="range" min="{{ min_max_price.price__min }}" max="{{min_max_price.price__max}}" oninput="max_price.value=this.value">
+							<div class="d-flex justify-content-between">
+								<div class="caption">From: Rs{{ min_max_price.price__min }}</div>
+								<div class="caption">To: Rs{{ min_max_price.price__max }}</div>
+							</div>
+							<input type="number" class="w-100 mt-4" value="{{min_max_price.price__min}}" id="max_price" min="{{ min_max_price.price__min }}" max="{{min_max_price.price__max}}" placeholder="Current Price" onkeyup="range.value=this.value">
+
+						</div>
+							<div class="custom-checkbox">
+							<button type="button" style="margin-top: 20px; background-color: #ff6c00; color: white;" class="btn mt-20 w-100" id="filertBtn">Filter</button>
+							</div>		
+					</div>
+
+				</div>
+			</div>
+			<div class="col-xl-9 col-lg-4 col-md-7">
+				<!-- Start Filter Bar -->
+				<div class="filter-bar d-flex flex-wrap align-items-center">
+					<!-- <div class="sorting">
+						<form action="" method="get">
+						<select id="sort-select" name="sort">
+							<option value="price_low">Price Low-to-High</option>
+							<option value="price_high">Price High-to-Low</option>
+						</select>
+						<button onclick="sortProducts(event)" style="margin-left: 50px;">Sort</button>
+
+
+						</form>
+					</div> -->
+					<div class="sorting mr-auto">
+						<!-- <select>
+							<option value="1">Show 12</option>
+							<option value="1">Show 12</option>
+							<option value="1">Show 12</option>
+						</select> -->
+					</div>
+					<nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-center">
+						  <li class="page-link" style="cursor: pointer; color: #d46618;" {% if page.has_previous %} onclick="pagination('{{ page.previous_page_number }}')"{% endif %}>&laquo;</li>
+						  {% for num in page.paginator.page_range %}
+							<li class="page-link {% if num == page.number %}active{% endif %}" style="cursor: pointer; color: #d46618;" onclick="pagination('{{ num }}')">
+							{{ num }}</li>
+						  {% endfor %}
+						  <li class="page-link" style="cursor: pointer; color: #d46618;" {% if page.has_next %} onclick="pagination('{{ page.next_page_number }}')" {% endif %}>&raquo;</li>    
+						</ul>
+					  </nav>
+				</div>
+				<!-- End Filter Bar -->
+				<!-- Start Best Seller -->
+				<section class="lattest-product-area pb-40 category-list">
+					<div class="row">
+						<!-- single product -->
+						<div class="container">
+							<div class="row" id="filtered-product">
+								{% for p in page %}
+								<div class="col-lg-4 col-md-4 col-sm-6">
+									<div class="single-product">
+										<a href="{% url 'productDetail' p.slug %}"><img class="img-fluid" style="width: 200px; height: 110px; margin-top: 10px;" src="{{p.img.url}}" alt=""></a>
+										<div class="product-details">
+											<h5>{{p.brand_id.brand_name}}</h5>
+											<h6>{{p.product_id.title}}</h6>
+											<div class="price">
+												<h6>RS {{p.price}}</h6>
+												{% if p.stock == 0 %}
+													<h6 style="color: red;">Out of stock</h6>
+												{% endif %}
+											</div>
+											<div class="prd-bottom">
+												{% csrf_token %}
+												<input type="hidden" value="{{ p.id }}" class="product-id">
+												<input type="hidden" id="sst" value="1">
+												<a href="#" class="social-info add-wishlist">
+													<span class="lnr lnr-heart"></span>
+													<p class="hover-text">Wishlist</p>
+												</a>
+												{% if p.stock == 0 %}
+													<p class=></p>
+												{% else %}
+												<a href="" class="social-info add-cart">
+													<span class="ti-bag"></span>
+													<p class="hover-text">add to bag</p>
+												</a>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+						
+						
+				</section>
+
+			</div>
+		</div>
+	</div>
+	{% endblock main %}
+
+	{% block script %}
+	<script src="{% static 'js/filter.js' %}"></script>
+
+	<script src="{% static 'js/function.js' %}"></script>
+
+
+
+	<script>
+		function pagination(page_number) {
+			const urlParams = new URLSearchParams(window.location.search);
+			urlParams.set('page', page_number);
+			window.location.href = `${window.location.pathname}?${urlParams.toString()}`;
+		}
+	</script>
+
+<script>
+$(document).ready(function () {
+    // Add to cart functionality
+    $(".add-cart").on("click", function (e) {
+        e.preventDefault();
+
+        console.log("Cart function is called");
+
+        let quantity = $("#sst").val();
+        let product_id = $(this).closest(".single-product").find(".product-id").val();
+        var token = $('input[name=csrfmiddlewaretoken]').val();
+
+        console.log("Quantity:", quantity);
+        console.log("Product ID:", product_id);
+
+        $.ajax({
+            type: "POST",
+            url: "/cart/add_to_cart/",
+            data: {
+                'id': product_id,
+                'qty': quantity,
+                csrfmiddlewaretoken: token,
+            },
+            dataType: "json",
+            beforeSend: function() {
+                console.log("Sending request to add to Cart");
+            },
+            success: function(response){
+                console.log(response);
+                alertify.success(response.status);
+                console.log("Added product to Cart");
+            },
+            error: function(xhr, status, error) {
+                console.error("Error adding product to Cart:", error);
+            }
+        });
+    });
+
+    // Add to wishlist functionality
+    $(".add-wishlist").on("click", function (e) {
+        e.preventDefault();
+
+        console.log("Wishlist function is called");
+
+        let product_id = $(this).closest(".single-product").find(".product-id").val();
+        var token = $('input[name=csrfmiddlewaretoken]').val();
+
+        console.log("Product ID:", product_id);
+
+        $.ajax({
+            type: "POST",
+            url: '/wishlist/add_to_wishlist/',
+            data: {
+                'id': product_id,
+                csrfmiddlewaretoken: token,
+            },
+            dataType: "json",
+            beforeSend: function() {
+                console.log("Sending request to add to Wishlist");
+            },
+            success: function(response){
+                console.log(response);
+                alertify.success(response.status);
+                console.log("Added product to Wishlist");
+            },
+            error: function(xhr, status, error) {
+                console.error("Error adding product to Wishlist:", error);
+            }
+        });
+    });
+});
+
+
+</script>
+
+<script>
+function sortProducts(event) {
+    // Prevent the default form submission behavior
+    event.preventDefault();
+
+    // Get the selected sorting option
+    const selectedOption = document.getElementById('sort-select').value;
+
+    // Send an AJAX request to the server to fetch sorted products
+    $.ajax({
+        type: 'GET',
+        url: window.location.pathname,
+        data: { sort: selectedOption },
+        dataType: 'html',
+        success: function (data) {
+            // Replace the current product list with the new sorted products
+            $('#filtered-product').html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching sorted products:', error);
+        }
+    });
+}
+
+
+
+</script>
+	
+
+
+	{% endblock script %}

@@ -1,0 +1,315 @@
+{% extends 'index.html' %}
+{% load static%}
+
+
+
+{% block head %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/themes/default.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.min.js"></script>
+
+<style>
+
+
+
+
+    .cart-product-image {
+        max-width: 100px;
+        max-height: 100px;
+        width: auto;
+        height: auto;
+}
+
+
+
+</style>
+
+
+
+{% endblock head %}
+
+	<!-- Start Header Area -->
+	
+	{% block navbar %}
+		
+		
+	<header class="header_area sticky-header">
+		<div class="main_menu">
+			<nav class="navbar navbar-expand-lg navbar-light main_box">
+				<div class="container">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<a class="navbar-brand logo_h" href="{% url 'home' %}"><img style="height: 90px;" src="{% static 'img/log/social.jfif' %}" alt=""></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+						<ul class="nav navbar-nav menu_nav ml-auto">
+							<li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+							<li class="nav-item"><a href="{% url 'productList' %}" class="nav-link">Shop</a>
+								<!-- <ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
+									<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
+									<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
+									<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
+									<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+								</ul> -->
+							</li>
+							<!-- <li class="nav-item active"><a href="{% url 'productList' %}" class="nav-link">Female</a> -->
+								<!-- <ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="blog.html">Women</a></li>
+									<li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
+								</ul> -->
+							<!-- </li> -->
+							<li class="nav-item">
+								<a href="{% url 'wishlist' %}" class="nav-link">Wishlist</a>
+								<!-- <ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+									<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
+									<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
+								</ul> -->
+							</li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav-item nav-link active"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+							<!-- <li class="nav-item nav-link">
+								<button class="search "><span class="lnr lnr-magnifier" id="search"></span></button>
+							</li> -->
+							{% if user.is_authenticated %}
+							<li class="nav-item dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false"><span class="ti-user"></span></a>
+								<ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="{% url 'user_profile' %}">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log out</a></li>
+								</ul>
+							</li>
+
+							{% else %}
+							<li class="nav-item"><a href="{% url 'logIn' %}" class="nav-link"><span>Login</span></a>
+
+							{% endif %}
+
+
+						</ul>
+						
+					</div>
+				</div>
+			</nav>
+		</div>
+		<!-- <div class="search_input" id="search_input_box">
+			<div class="container">
+				<form class="d-flex justify-content-between">
+					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+			</div>
+		</div> -->
+	</header>
+	{% endblock navbar %}
+
+	<!-- End Header Area -->
+    
+	{% block main %}
+
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Shopping Cart</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="category.html">Cart</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <!--================Cart Area =================-->
+    <section class="cart_area cartdata">
+        <div class="container">
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        {% if cart %}
+                        {% for items in cart%}
+
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img src="{{ items.product.img.url }}" alt="" class="cart-product-image">
+                                        </div>
+                                        <div class="media-body">
+                                            <p>{{ items.product.product_id.title }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h6>Rs {{items.product.price}}</h6>
+                                </td>
+                                <td>
+                                    <div class="product_count product_data">
+                                        {% csrf_token %}
+
+                                        <input type="hidden" class="product-id" value="{{ items.product.id}}">
+                                        <input type="hidden" class="max-stock" value="{{ items.product.stock }}">
+
+                                        <input type="text" name="qty" id="sst_{{ items.product.id }}" maxlength="12" value="{{ items.qty }}" title="Quantity:" class="input-text qty">
+
+
+                                        <button class="increase increment-btn changeQuantity" type="button"><i class="lnr lnr-chevron-up"></i></button>
+                                        <button class="reduced decrement-btn changeQuantity" type="button"><i class="lnr lnr-chevron-down"></i></button>
+                                        
+                                    </div>
+                                </td>
+                                    <td>
+                                    {% if items.qty > 1 %}
+                                    <span class="total-price" data-product-id="{{ items.product.id }}">Rs {{ items.total_price }}</span>
+                                    {% else %}
+                                    <span class="total-price" data-product-id="{{ items.product.id }}">Rs {{ items.product.price }}</span>
+                                    {% endif %}
+                                    </td>
+                                <td>
+                                    <div>
+                                        <!-- <button class="btn btn-danger delete-cart"> <i class="fa fa-trash"> Remove</i></button> -->
+						                <button   class="primary-btn delete-cart" style="border: none;"><i class="fa fa-trash"> Remove </i></button>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                        
+                   
+                            <tr class="bottom_button">
+                                <!-- <td>
+                                    <a class="gray_btn" href="#">Update Cart</a>
+                                </td> -->
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <!-- <form method="get">
+                                    {% if valid_coupon %}
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <strong>{{coupon.code}}</strong>&nbsp;{{valid_coupon}}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                    {% elif invalid_coupon%}
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        {{invalid_coupon}}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+
+                                    {% endif %} -->
+                                    
+                                <td>
+
+                                    
+
+                                </td>
+                                
+                                <!-- </form> -->
+                            </tr>
+                            <tr>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    <h5>Subtotal</h5>
+                                </td>
+                                <td>
+                                    <h5 id="subtotal">Rs {{subtotal}}</h5> 
+                                </td>
+                                
+             
+                            </tr>
+                            
+                            
+                            <tr class="out_button_area">
+                                <td>
+                                    <!-- {% if valid_coupon %}
+
+
+                                    <div class="col-lg-8">
+                                        <div class="order_box">
+                                            <h2>Discounted Price</h2>
+                
+                
+                                            <ul class="list list_2">
+                                                <li><a href="#">Shipping <span>Free</span></a></li>
+
+                                                <li><a href="#">Total <span id="total">Rs {{subtotal}}</span></a></li>
+                                            </ul>
+                                      
+                                        </div>
+                                    </div>
+                                    {% endif %} -->
+
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    
+
+                                </td>
+                                <td>
+                                    <div class="checkout_btn_inner d-flex align-items-center">
+                                        <a class="gray_btn" href="#">Continue Shopping</a>
+                                        <a class="primary-btn" href="{% url 'checkout' %}">Proceed to checkout</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    {% else %}
+                        <h4>Your Cart is Empty</h4>
+                    {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Cart Area =================-->
+
+	{% endblock main %}
+
+
+    
+{% block script %}
+
+<script src="{% static 'js/function.js' %}"></script>
+
+
+{% endblock script %}

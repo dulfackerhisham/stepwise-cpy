@@ -1,0 +1,24 @@
+{% for p in products %}
+								<div class="col-lg-4 col-md-4 col-sm-6">
+									<div class="single-product">
+										<a href="{% url 'productDetail' p.slug %}"><img class="img-fluid" style="width: 200px; height: 110px; margin-top: 10px;" src="{{p.img.url}}" alt=""></a>
+										<div class="product-details">
+											<h5>{{p.brand_id.brand_name}}</h5>
+											<h6>{{p.product_id.title}}</h6>
+											<div class="price">
+												<h6>RS {{p.price}}</h6>
+											</div>
+											<div class="prd-bottom">
+												<a href="" class="social-info">
+													<span class="ti-bag"></span>
+													<p class="hover-text">add to bag</p>
+												</a>
+												<a href="" class="social-info">
+													<span class="lnr lnr-heart"></span>
+													<p class="hover-text">Wishlist</p>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endfor %}

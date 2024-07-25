@@ -1,0 +1,191 @@
+{% extends 'index.html' %}
+{% load static i18n %}
+
+
+{% block head %}
+
+<style>
+    .dashboard-menu .nav-link.selected{
+        background-color: rgb(255, 140, 33);
+        color: white;
+    }
+</style>
+
+
+{% endblock head %}
+
+
+<body>
+	{% block navbar %}
+
+	<!-- Start Header Area -->
+	<header class="header_area sticky-header">
+		<div class="main_menu">
+			<nav class="navbar navbar-expand-lg navbar-light main_box">
+				<div class="container">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<a class="navbar-brand logo_h" href="{% url 'home' %}"><img style="height: 90px;" src="{% static 'img/log/social.jfif' %}" alt=""></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+						<ul class="nav navbar-nav menu_nav ml-auto">
+							<li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+							<li class="nav-item"><a href="{% url 'productList' %}" class="nav-link">Shop</a></li>
+
+							<li class="nav-item">
+								<a href="{% url 'wishlist' %}" class="nav-link">Wishlist</a>
+
+							</li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav-item nav-link"><a href="{% url 'cart' %}" class="cart"><span class="ti-bag"></span></a></li>
+							<!-- <li class="nav-item nav-link">
+								<button class="search "><span class="lnr lnr-magnifier" id="search"></span></button>
+							</li> -->
+
+                            
+							{% if user.is_authenticated %}
+							<li class="nav-item dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false"><span class="ti-user"></span></a>
+								<ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="{% url 'user_profile' %}">Profile</a></li>
+									<li class="nav-item px-2"><a class="nav-link" href="{% url 'logout' %}">Log out</a></li>
+								</ul>
+							</li>
+
+							{% else %}
+							<li class="nav-item"><a href="{% url 'logIn' %}" class="nav-link"><span>Login</span></a>
+
+							{% endif %}
+							
+
+
+						</ul>
+						
+					</div>
+				</div>
+			</nav>
+		</div>
+		<!-- <div class="search_input" id="search_input_box">
+			<div class="container">
+				<form class="d-flex justify-content-between">
+					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+			</div>
+		</div> -->
+	</header>
+	{% endblock navbar %}
+
+	<!-- End Header Area -->
+
+	{% block main %}
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Order Detail</h1>
+					<nav class="d-flex align-items-center">
+						<a href="{% url 'home' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+
+    <!-- User Profile Content -->
+    <div class="page-content pt-150 pb-150 m-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="dashboard-menu">
+                        <ul class="nav flex-column" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link"  href="{% url 'user_profile' %}" >Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active"  href="#orders-content">Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"  href="{% url 'logout' %}">Log out</a>
+                            </li>
+                            <!-- Add more tabs as needed -->
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="tab-content account dashboard-content pl-50">
+                        <div class="tab-pane fade active show" id="orders-content" role="tabpanel" aria-labelledby="orders-tab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="mb-0">Order Detail</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order id</th>
+                                                    <th>Product</th>
+                                                    <th>Price</th>
+                                                    <th>Quantity</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Loop through user's orders and populate the table -->
+                                                {% for order in order_product %}
+                                                <tr>
+                                                    <td>{{ order.id }}</td>
+                                                    <td>{{ order.product.product_id.title }}</td>
+                                                    <td>Rs {{ order.price }}</td>
+                                                    <td>{{ order.quantity }}</td>
+                                                    <td>Rs {{ order.total_amount }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End User Profile Content -->
+    {% endblock main %}
+
+    {% block script %}
+    <script>
+        $(document).ready(function() {
+          $('.nav-link').on('click', function() {
+            // Remove the 'selected' class from all tabs
+            $('.nav-link').removeClass('selected');
+            
+            // Add the 'selected' class to the clicked tab
+            $(this).addClass('selected');
+            
+            // Hide all tab content
+            $('.tab-pane').removeClass('show active');
+            
+            // Show the clicked tab content
+            var target = $(this).data('target');
+            $(target).addClass('show active');
+          });
+        });
+      </script>
+
+    {% endblock script %}

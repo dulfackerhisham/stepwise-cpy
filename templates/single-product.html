@@ -1,0 +1,410 @@
+{% extends 'index.html' %}
+{% load static i18n %}
+
+
+{% block head %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/magnify.css' %}">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/themes/default.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+{% endblock head %}
+
+
+
+
+<!-- Start Header Area -->
+
+{% block navbar %}
+
+
+<header class="header_area sticky-header">
+	<div class="main_menu">
+		<nav class="navbar navbar-expand-lg navbar-light main_box">
+			<div class="container">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<a class="navbar-brand logo_h" href="{% url 'home' %}"><img style="height: 90px;" src="{% static 'img/log/social.jfif' %}" alt="">
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+					<ul class="nav navbar-nav menu_nav ml-auto">
+						<li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+						<li class="nav-item active"><a href="{% url 'productList' %}" class="nav-link">Shop</a>
+							<!-- <ul class="dropdown-menu">
+										<li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
+										<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
+										<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
+										<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
+										<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+									</ul> -->
+						</li>
+						<!-- <li class="nav-item active"><a href="{% url 'productList' %}" class="nav-link">Female</a> -->
+						<!-- <ul class="dropdown-menu">
+										<li class="nav-item"><a class="nav-link" href="blog.html">Women</a></li>
+										<li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
+									</ul> -->
+						<!-- </li> -->
+						<li class="nav-item">
+							<a href="{% url 'wishlist' %}" class="nav-link">Wishlist</a>
+							<!-- <ul class="dropdown-menu">
+										<li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+										<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
+										<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
+									</ul> -->
+						</li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="nav-item nav-link"><a href="{% url 'cart' %}" class="cart"><span class="ti-bag"></span></a></li>
+						<!-- <li class="nav-item nav-link">
+							<button class="search "><span class="lnr lnr-magnifier" id="search"></span></button>
+						</li> -->
+						{% if user.is_authenticated %}
+						<li class="nav-item dropdown">
+							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+								aria-haspopup="true" aria-expanded="false"><span class="ti-user"></span></a>
+							<ul class="dropdown-menu">
+								<li class="nav-item"><a class="nav-link" href="{% url 'user_profile' %}">Profile</a></li>
+								<li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log out</a></li>
+							</ul>
+						</li>
+
+						{% else %}
+						<li class="nav-item"><a href="{% url 'logIn' %}" class="nav-link"><span>Login</span></a>
+
+						{% endif %}
+
+
+					</ul>
+
+				</div>
+			</div>
+		</nav>
+	</div>
+	<!-- <div class="search_input" id="search_input_box">
+		<div class="container">
+			<form class="d-flex justify-content-between">
+				<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+				<button type="submit" class="btn"></button>
+				<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+			</form>
+		</div>
+	</div> -->
+</header>
+{% endblock navbar %}
+
+<!-- End Header Area -->
+
+{% block main %}
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+	<div class="container">
+		<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+			<div class="col-first">
+				<h1>{{product.brand_id.brand_name}}</h1>
+				<h1>{{product.category_id.name}}</h1>
+				<nav class="d-flex align-items-center">
+					<a href="{% url 'home' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+					<a href="{% url 'productList' %}">Shop<span class="lnr lnr-arrow-right"></span></a>
+				</nav>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Single Product Area =================-->
+<div class="product_image_area">
+	<div class="container">
+		<div class="row s_product_inner product_data">
+			<div class="col-lg-6">
+				<div class="s_Product_carousel">
+
+
+					<!-- <div class="single-prd-item" id="img-container">
+						<div id="lens"></div>
+						<img class="img-fluid" id="featured-img" src="{% static 'img/i1.jpg' %}" alt="">
+					</div> -->
+					<div class="single-prd-item" id="img-container">
+						<div></div>
+						<img src="{{product.img.url}}" id="featured-img" class="zoom" data-magnify-src="{{product.img.url}}">
+
+					</div>
+					{% for p_img in product.p_images.all %}
+					<div class="single-prd-item">
+						<div></div>
+						<img src="{{p_img.image.url }}"  class="zoom" data-magnify-src="{{p_img.image.url }}">
+					</div>
+					{% endfor %}
+
+
+
+				</div>
+			</div>
+			<div class="col-lg-5 offset-lg-1">
+				<div class="s_product_text">
+					<h3>{{product.brand_id.brand_name}}</h3>
+					<h3>{{product.product_id.title}}</h3>
+					<ul class="list">
+						<li><a class="active" href="#"><span>Category</span> : {{product.category_id.name}}</a></li>
+						<li><a class="active" href="#"><span>Gender</span> : {{product.get_gender_display}}</a></li>
+						{% if product.stock %}
+						<li><a class="active" href="#"><span>Availibility</span> : In Stock</a></li>
+						{% else %}
+						<li><a class="active" href="#"><span>Availibility</span> : Not In Stock</a></li>
+						{% endif %}
+					</ul>
+
+
+					<hr>
+					<span class="">Color: {{product.color_id}} </span>
+					<hr>
+					
+						<span class="">Size </span>
+
+					<div class="row ps-2">
+						<br>
+						{% for p in product.product_id.product_item.all %}
+						<div class="col-1 m-1 p-0 bg-secondary-subtle rounded-1 border border-2 {% if p == product %} border-warning {% endif %}">
+						  <a href="{% url 'productDetail' p.slug %}" data-bs-title="{{ p.color_id }}">
+							{{p.size_id}}
+						  </a>
+						</div>
+						{% endfor %}
+					  </div>
+						<hr>
+
+
+
+
+					<div>
+						<span>Price</span>
+					<h2 class="product-price">Rs {{ product.price }}</h2>
+					<hr>
+
+					</div>
+
+
+
+					<div class="product_count product_data">
+					{% if product.stock == 0 %}
+						<!-- <p class=>Out of stock</p> -->
+					{% else %}
+						{% csrf_token %}
+						<input type="hidden" value="{{ product.id }}" class="product-id">
+						<input type="hidden" class="max-stock" value="{{ product.stock }}">
+
+						<!-- <input type="hidden" value="{{ products.product_id.title }}" class="product-title" name="" id=""> -->
+						<label for="qty">Quantity:</label>
+						<input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:"
+							class="input-text qty">
+							<button class="increase increment-btn" type="button"><i class="lnr lnr-chevron-up"></i></button>
+							<button class="reduced decrement-btn" type="button"><i class="lnr lnr-chevron-down"></i></button>
+						{% endif %}
+					
+					</div>
+					<div class="card_area d-flex align-items-center">
+						<br>
+						{% if product.stock == 0 %}
+						<!-- <a class="primary-btn" href="" id="add-to-cart-btn">Add to Cart</a> -->
+						{% else %}
+						<button type="submit" class="primary-btn add-to-cart-btn" style="border: none;">Add to Cart</button>
+						{% endif %}
+						<!-- <a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a> -->
+						<a class="icon_btn add-to-wishlist" href="#"><i class="lnr lnr lnr-heart "></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<!--================End Single Product Area =================-->
+
+<!--================Product Description Area =================-->
+<section class="product_description_area">
+	<div class="container">
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+					aria-selected="true">Description</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+					aria-controls="profile" aria-selected="false">Specification</a>
+			</li>
+
+			<li class="nav-item">
+				<a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab"
+					aria-controls="review" aria-selected="false">Reviews</a>
+			</li>
+		</ul>
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+				<p>{{product.product_id.description}}</p>
+			</div>
+			<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+				<div class="table-responsive">
+					<table class="table">
+						<tbody>
+							<tr>
+								<td>
+									<h5>Color</h5>
+								</td>
+								<td>
+									<h5>{{product.color_id.color_value}}</h5>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5>Size</h5>
+								</td>
+								<td>
+									<h5>{{product.size_id.size_value}}</h5>
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="row total_rate">
+							<div class="col-6">
+								<div class="box_total">
+									<h5>Overall</h5>
+									<h4>{{ average_rating.rating }}</h4> 
+									<h6>({{reviews.count}} Reviews)</h6>
+								</div>
+							</div>
+							<div class="col-6">
+								<!-- <div class="rating_list">
+									<h3>Based on {{reviews.count}} Reviews</h3>
+									<ul class="list">
+										<li><a href="#">5 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
+													class="fa fa-star"></i><i class="fa fa-star"></i><i
+													class="fa fa-star"></i> 01</a></li>
+										<li><a href="#">4 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
+													class="fa fa-star"></i><i class="fa fa-star"></i><i
+													class="fa fa-star"></i> 01</a></li>
+										<li><a href="#">3 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
+													class="fa fa-star"></i><i class="fa fa-star"></i><i
+													class="fa fa-star"></i> 01</a></li>
+										<li><a href="#">2 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
+													class="fa fa-star"></i><i class="fa fa-star"></i><i
+													class="fa fa-star"></i> 01</a></li>
+										<li><a href="#">1 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
+													class="fa fa-star"></i><i class="fa fa-star"></i><i
+													class="fa fa-star"></i> 01</a></li>
+									</ul>
+								</div> -->
+							</div>
+						</div>
+
+
+						{% for r in reviews %}
+						<div class="review_list mt-3">
+							<div class="review_item">
+								<div class="media">
+									<div class="d-flex">
+										<img style="width: 120px;" src="https://img.freepik.com/premium-vector/gray-avatar-icon-vector-illustration_276184-163.jpg" alt="">
+									</div>
+									<div class="media-body">
+										<h4>{{r.user.username}}</h4>
+										<div>
+											<span class="font-xs text-muted">{{ r.date|date:"d M, Y" }}</span>
+										</div>
+									<div>
+										{% for s in r.rating|ljust:r.rating %}
+											<i class = "fas fa-star text-warning"></i>
+										{% endfor %}
+									</div>
+									</div>
+
+							</div>
+							<p>{{ r.review }} </p>
+
+
+						</div>
+					</div>
+					{% endfor %}
+
+
+					<div class="col-lg-6 mt-5">
+						{% if request.user.is_authenticated %}
+						{% if make_review and user_has_bought %}
+
+						<div class="review_box">
+							<h4 class="add-review">Add a Review</h4>
+							<strong class="text-success" id="review-response"> </strong>
+							<!-- <p>Your Rating:</p> -->
+							<!-- <ul class="list">
+								<li><a href="#"><i class="fa fa-star"></i></a></li>
+								<li><a href="#"><i class="fa fa-star"></i></a></li>
+								<li><a href="#"><i class="fa fa-star"></i></a></li>
+								<li><a href="#"><i class="fa fa-star"></i></a></li>
+								<li><a href="#"><i class="fa fa-star"></i></a></li>
+							</ul> -->
+							<!-- <p>Outstanding</p> -->
+							<form action="{% url 'add-review' product.id %}" class="form-contact comment_form hide-form" id="commentform" method="POST">
+							{% csrf_token %}
+							<div class="form-group">
+							{{review_form.review}}
+
+							</div>
+							<div class="form-group">
+								{{review_form.rating}}
+							</div>
+							<button type="submit" class="btn primary-btn mt-3">Add Review</button>
+						</form>
+						</div>
+						{% endif %}
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--================End Product Description Area =================-->
+
+{% endblock main %}
+
+{% block script %}
+<script>
+	var sizes = jQuery(".product--size").find("span");
+	sizes.click(function () {
+		sizes.removeClass("active");
+		$(this).addClass("active");
+	});
+</script>
+
+
+<script src="{% static 'js/img_zoom.js' %}"></script>
+<script src="{% static 'js/jquery.magnify.js' %}"></script>
+
+<script src="{% static 'js/function.js' %}"></script>
+<script src="{% static 'js/review.js' %}"></script>
+
+<script>
+	$(document).ready(function() {
+	  $('.zoom').magnify();
+	});
+</script>
+
+{% endblock script %}

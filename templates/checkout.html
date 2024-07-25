@@ -1,0 +1,377 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+
+{% block head %}
+<style>
+
+
+
+    .cart-product-image {
+        max-width: 50px;
+        max-height: 50px;
+        width: auto;
+        height: auto;
+}
+.coupon-list {
+    margin-top: 20px;
+}
+.coupon-item {
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+</style>
+
+
+
+{% endblock head %}
+
+
+
+	<!-- Start Header Area -->
+	
+	{% block navbar %}
+		
+		
+	<header class="header_area sticky-header">
+		<div class="main_menu">
+			<nav class="navbar navbar-expand-lg navbar-light main_box">
+				<div class="container">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<a class="navbar-brand logo_h" href="{% url 'home' %}"><img style="height: 90px;" src="{% static 'img/log/social.jfif' %}" alt=""></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+						<ul class="nav navbar-nav menu_nav ml-auto">
+							<li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+							<li class="nav-item"><a href="{% url 'productList' %}" class="nav-link">Shop</a>
+								<!-- <ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
+									<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
+									<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
+									<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
+									<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+								</ul> -->
+							</li>
+							<!-- <li class="nav-item active"><a href="{% url 'productList' %}" class="nav-link">Female</a> -->
+								<!-- <ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="blog.html">Women</a></li>
+									<li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
+								</ul> -->
+							<!-- </li> -->
+							<li class="nav-item">
+								<a href="{% url 'wishlist' %}" class="nav-link">Wishlist</a>
+								<!-- <ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+									<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
+									<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
+								</ul> -->
+							</li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav-item nav-link"><a href="{% url 'cart' %}" class="cart"><span class="ti-bag"></span></a></li>
+							<!-- <li class="nav-item nav-link">
+								<button class="search "><span class="lnr lnr-magnifier" id="search"></span></button>
+							</li> -->
+							{% if user.is_authenticated %}
+							<li class="nav-item dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false"><span class="ti-user"></span></a>
+								<ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="{% url 'user_profile' %}">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log out</a></li>
+								</ul>
+							</li>
+
+							{% else %}
+							<li class="nav-item"><a href="{% url 'logIn' %}" class="nav-link"><span>Login</span></a>
+
+							{% endif %}
+
+
+						</ul>
+						
+					</div>
+				</div>
+			</nav>
+		</div>
+		<!-- <div class="search_input" id="search_input_box">
+			<div class="container">
+				<form class="d-flex justify-content-between">
+					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+			</div>
+		</div> -->
+	</header>
+	{% endblock navbar %}
+
+	<!-- End Header Area -->
+
+	{% block main %}
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Checkout</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="single-product.html">Checkout</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- {% if messages %}
+	{% for message in messages %}
+		<div class="alert text-danger alert-{{message.tags}}" role="alert">
+			{{ message }}
+		</div>
+	{% endfor %}
+	{% endif %} -->
+    <!-- End Banner Area -->
+
+    <!--================Checkout Area =================-->
+    <section class="checkout_area section_gap">
+        <div class="container">
+            {% if messages %}
+            {% for message in messages %}
+                <div class="alert text-danger alert-{{message.tags}}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% endif %}
+            <!-- <div class="returning_customer">
+                <div class="check_title">
+                    <h2>Returning Customer? <a href="#">Click here to login</a></h2>
+                </div>
+                <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new
+                    customer, please proceed to the Billing & Shipping section.</p>
+                <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                    <div class="col-md-6 form-group p_star">
+                        <input type="text" class="form-control" id="name" name="name">
+                        <span class="placeholder" data-placeholder="Username or Email"></span>
+                    </div>
+                    <div class="col-md-6 form-group p_star">
+                        <input type="password" class="form-control" id="password" name="password">
+                        <span class="placeholder" data-placeholder="Password"></span>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <button type="submit" value="submit" class="primary-btn">login</button>
+                        <div class="creat_account">
+                            <input type="checkbox" id="f-option" name="selector">
+                            <label for="f-option">Remember me</label>
+                        </div>
+                        <a class="lost_pass" href="#">Lost your password?</a>
+                    </div>
+                </form>
+            </div> -->
+            <!-- <div class="cupon_area">
+                <div class="check_title">
+                    <h2>Have a coupon? <a href="#">Click here to enter your code</a></h2>
+                </div>
+                <input type="text" placeholder="Enter coupon code">
+                <a class="tp_btn" href="#">Apply Coupon</a>
+            </div> -->
+        <form action="{% url 'placeorder' %}" method="POST">
+            {% if valid_coupon %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>{{applied_coupon.code}}</strong>&nbsp;{{valid_coupon}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% elif invalid_coupon%}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{invalid_coupon}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+            {% endif %} 
+            {% csrf_token %}
+            <div class="billing_details">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h3>Billing Details</h3>
+                            <div class="col-md-12 form-group">
+                                <div class="row">
+                                    <div class="col-md-6 form-group p_star">
+                                        <input type="text" class="form-control" id="first" name="fname"
+                                            value="{{ active_address.fname }}" placeholder="First Name">
+                                        {% if address_form.fname.errors %}
+                                            <p class="text-danger">{{ address_form.fname.errors.0 }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6 form-group p_star">
+                                        <input type="text" class="form-control" id="last" name="lname"
+                                            value="{{ active_address.lname }}" placeholder="Last Name">
+                                        {% if address_form.lname.errors %}
+                                            <p class="text-danger">{{ address_form.lname.errors.0 }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <div class="row">
+                            <div class="col-md-6 form-group p_star">
+                                <input type="number" class="form-control" id="number" name="phone"
+                                 value="{{active_address.phone}}" placeholder="phone number">
+                                 {% if address_form.phone.errors %}
+                                    <p class="text-danger">{{ address_form.phone.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="email" class="form-control" id="email" name="email"
+                                 value="{{active_address.email}}" placeholder="email">
+                                 {% if address_form.email.errors %}
+                                    <p class="text-danger">{{ address_form.email.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                            <div class="col-md-12 form-group p_star">
+                                <select class="country_select" name="country" value="{{active_address.country}}">
+                                    <option>India</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="add1" name="address"
+                                 placeholder="address" value="{{active_address.address}}">
+                                 {% if address_form.address.errors %}
+                                    <p class="text-danger">{{ address_form.address.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="city" name="city"
+                                 placeholder="Town/City" value="{{active_address.city}}">
+                                 {% if address_form.city.errors %}
+                                    <p class="text-danger">{{ address_form.city.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="state" name="state"
+                                 placeholder="State" value="{{active_address.state}}">
+                                 {% if address_form.state.errors %}
+                                    <p class="text-danger">{{ address_form.state.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="number" class="form-control" id="zip" name="pincode"
+                                 placeholder="Pincode/ZIP" value="{{active_address.pincode}}">
+                                 {% if address_form.zip.errors %}
+                                    <p class="text-danger">{{ address_form.zip.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                            <!-- <div class="col-md-12 form-group">
+                                <div class="creat_account">
+                                    <input type="checkbox" id="f-option2" name="selector">
+                                    <label for="f-option2">Create an account?</label>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-12 form-group">
+                                <div class="creat_account">
+                                    <h3>Shipping Details</h3>
+                                    <input type="checkbox" id="f-option3" name="selector">
+                                    <label for="f-option3">Ship to a different address?</label>
+                                </div>
+                                <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
+                            </div> -->
+                        </form>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="coupon-list">
+                            <h2>Available Coupons</h2>
+                            {% for coupon in available_coupons %}
+                                <div class="coupon-item">
+                                    <strong>Code: {{ coupon.code }}</strong> -> discount of {{ coupon.discount }}%
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    <form action="{% url 'apply_coupon' %}" method="get">
+                    <div class="cupon_text align-items-center">
+                        <input id="coupon_code" type="text" placeholder="Coupon Code" name="coupon_code">
+                        <button class="primary-btn" type="submit">Apply Coupon</button>
+                    </div>
+                    </form>
+                        <div class="order_box mt-4">
+                            <h2>Your Order</h2>
+                            {% if cart %}
+
+                            <ul class="list">
+                                <li><a href="#">Product <span>Total</span></a></li>
+                            {% for items in cart%}
+
+                                <li><a href="#"> <img src="{{ items.product.img.url }}" alt="" class="cart-product-image"><span class="middle">Rs{{items.product.price}}</span><span class="middle">x {{items.qty}}</span> <span class="last">Rs {{items.total_price}}</span></a></li>
+                            {% endfor %}
+
+                            </ul>
+
+                            <ul class="list list_2">
+                                <!-- <li><a href="#">Subtotal <span>Rs{{subtotal}}</span></a></li> -->
+                                <li><a href="#">Shipping <span>Free</span></a></li>
+                                {% if valid_coupon %}
+                                <li><a href="">Coupon Code Applied <span>{{applied_coupon.code}}</span></a></li>
+                                <li><a href="">discount <span>{{applied_coupon.discount}}%</span></a></li>
+                                <li><a href="#">Total <span>Rs {{updated_total}}</span></a></li>
+                                {% else %}
+                                <li><a href="#">Total <span>Rs {{subtotal}}</span></a></li>
+                                {% endif %}
+
+
+                            </ul>
+
+                            <input type="hidden" value="COD" name="payment_mode">
+                            <button type="submit" class="btn primary-btn w-100 mt-3" style="border: none;"> COD | Place Order </button>
+                            <button type="button" class="btn btn-primary payWithRazorpay w-100 mt-2" style="border: none;"> Pay with Razorpay </button>
+                            <!-- <div class="creat_account mt-5">
+                                <input type="checkbox" id="f-option4" name="selector">
+                                <label for="f-option4">I’ve read and accept the </label>
+                                <a href="#">terms & conditions*</a>
+                            </div> -->
+                            
+                            {% else %}
+                            <h3>Your cart is empty</h3>
+
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        </div>
+    </section>
+    <!--================End Checkout Area =================-->
+	{% endblock main %}
+
+    {% block script %}
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <!-- Razorpay checkout -->
+	<script src="{% static 'js/checkout.js' %}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+
+    
+    {% endblock script %}
